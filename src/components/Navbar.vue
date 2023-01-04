@@ -1,8 +1,18 @@
 <template>
   <div id="nav-container" class="nav-container">
     <ul class="selected-area">
-      <li class="tab" id="signup-tab">CADASTRO</li>
-      <li class="tab tab-active" id="list-tab">LISTAGEM</li>
+      <li 
+        class="tab"
+        id="signup-tab" 
+        :disabled="change"
+        @click="changeButton()">CADASTRO</li>
+
+      <li 
+        class="tab tab-active" 
+        id="list-tab" 
+        :disabled="!change" 
+        @click="changeButton()">LISTAGEM</li>
+
     </ul>
     <button id="new-user-btn" @click="changeScreen()" class="new-user">
       Cadastrar novo usuário
@@ -29,6 +39,16 @@ export default {
   },
   
   methods: {
+    changeButton() {
+      if (!this.change) {
+        this.change = true;
+        this.$router.push("/register");
+      } else {
+        this.change = false;
+        this.$router.push("/");
+      }
+    },
+
     changeScreen() {
       let newUserBtn = document.getElementById("new-user-btn");
       let listTab = document.getElementById("list-tab");
