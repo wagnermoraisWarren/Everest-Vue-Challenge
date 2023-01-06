@@ -12,6 +12,7 @@ createServer({
   models: {
     user: Model
   },
+  
   routes() {
     this.namespace = 'api'
     

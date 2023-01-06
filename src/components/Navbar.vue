@@ -77,9 +77,9 @@ export default {
 </script>
 
 <style scoped>
-.display-none {
+/* .display-none {
   display: none;
-}
+} */
 
 .nav-container {
   display: flex;

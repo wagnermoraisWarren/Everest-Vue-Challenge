@@ -11,11 +11,12 @@ const routes = [
     name: 'users',
     component: Home
   },
+
   {
     path: '/register',
     name: 'cadastro',
     component: CreateUser
-  }
+  },
 ]
 
 const router = new VueRouter({

@@ -11,14 +11,16 @@
 <script>
   import Header from "./components/Header.vue"
   import Navbar from "./components/Navbar.vue"
-  
+
   export default {
     name: 'App',
+
     data() {
       return {
         headerTitle: "Usuários",
       }
     },
+
     components: {
       Header,
       Navbar
