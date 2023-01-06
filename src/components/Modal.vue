@@ -1,20 +1,20 @@
 <template>
-    <div class="modal">
+    <div class="modal close-modal">
         <header class="title">
             <h2>Detalhes do Usuário</h2>
             <button>
-                <img src="../assets/X-symbol.svg" alt="Close icon">
+                <img src="../assets/X-symbol.svg" alt="Close icon" @click="onLeftButtonClick()">
             </button>
         </header>
         <section class="details">
             <div class="user-details">
                 <div class="user-box">
                     <h4>CPF</h4>
-                    <p>7843784738</p>
+                    <p>{{ cpf }}</p>
                 </div>
                  <div class="user-box">
                     <h4>Nome Completo</h4>
-                    <p>Wagner Morais</p>
+                    <p>{{ nome }}</p>
                 </div>  
                 <div class="user-box">
                     <h4>Nascimento</h4>
@@ -49,12 +49,19 @@ export default {
         }
     },
 
-    methods: {
-
+    props: {
+        nome: { type: String, default: '' },
+        cpf:  { type: String, default: '' },
     },
+
+    emits: ["onLeftButtonClick"],
+
+    methods: {
+    onLeftButtonClick() {
+      this.$emit("onLeftButtonClick");
+    },
+  },
 };
-
-
 </script>
 
 <style scoped>
@@ -63,7 +70,13 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         margin: 2rem 2rem;
+        background: #eff0f3;
+        box-shadow: 0px 0px 1px 1100px rgba(0, 0, 0, 0.239);
         border-radius: 5px;
     }
     

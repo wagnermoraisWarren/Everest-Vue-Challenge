@@ -18,16 +18,12 @@
       </td>
       
       <td class="eye-btn">
-        <button id="eye-btn" @click="hideUser(user.id)">
-          <img
-            class="display-none"
-            id="closed-eye"
-            src="../assets/hideen-eye.svg"
-            alt="ícone olho fechado"
-          />
-          <img src="../assets/details-eye.svg" id="eye" alt="ícone olho" />
+        <button id="eye-btn" @click="isModal = true">
+          <img src="../assets/details-eye.svg" alt="ícone olho" class="display-none" id="closed-eye"/>
         </button>
       </td>
+
+      <Modal v-show="isModal" @onLeftButtonClick="isModal = false" nome = "Teste" />
     </tr>
   </table>
   <div class="pagination">
@@ -45,6 +41,8 @@
 
 <script>
 import axios from "axios";
+import Loading from "@/components/Loading.vue";
+import Modal from "@/components/Modal.vue";
 
 const customLabels = {
     first: '<<',
@@ -64,23 +62,30 @@ export default {
       currentItems: [],
       cpf: "",
       exampleItems,
-      customLabels
+      customLabels,
+      isModal: false
     }
   },
 
+  emits: ["onLeftButtonClick", "onRightButtonClick"],
+
   methods: {
-    hideUser(id) {
-      const user = document.getElementById(id);
-      const cpf = user.childNodes[0];
-      const name = user.childNodes[1];
-      cpf.classList.toggle("hide");
-      name.classList.toggle("hide");
-      const button = user.childNodes[2];
+    onLeftButtonClick() {
+      this.$emit("onLeftButtonClick");
     },
 
     onChangePage(currentItems) {
-      this.currentItems = currentItems;
-    }
+    this.currentItems = currentItems;
+    },
+  },
+
+    showModal() {
+      
+    },
+
+  components: {
+    Modal,
+    Loading
   },
 
   mounted() {
@@ -95,7 +100,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 table {
   margin: 2rem auto;
   border-collapse: collapse;
@@ -108,10 +113,6 @@ th {
   padding: 1rem 2rem;
   border-top: 1px solid #c7c7c7;
   border-bottom: 1px solid #c7c7c7;
-}
-
-.display-none {
-  display: none;
 }
 
 .eye-btn {
@@ -136,10 +137,6 @@ th {
 
 .eye-btn button img {
   vertical-align: bottom;
-}
-
-.hide {
-  filter: blur(10px)
 }
 
 td {
