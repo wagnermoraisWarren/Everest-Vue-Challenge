@@ -14,6 +14,48 @@
           maxlength="14"
         />
       </div>
+      <div class="input-area">
+        <label for="phone">Celular:</label>
+        <input 
+          type="text"
+          v-mask="'(##) #.####-####'"
+          v-model="phone"
+          maxlength="16"
+          >
+      </div>
+      <div class="input-area">
+        <label for="email">E-mail:</label>
+        <input 
+          type="email"
+          id="email"
+          v-model="email"
+        >
+      </div>
+      <div class="input-area">
+        <label for="confirmEmail">Confirmar E-mail:</label>
+        <input 
+          type="email"
+          id="confirmEmail"
+          v-model="confirmEmail"
+        >
+      </div>
+      <div class="input-area">
+        <label for="birthDate">Data de Nascimento:</label>
+        <input type="date" id="birthDate" v-model="birthDate">
+      </div>
+      <div class="checkbox-area">
+        <label for="checkbox">Deseja receber contato por:</label>
+        <div class="box-area">
+          <input type="checkbox" name="checkbox" id="sms">
+          <span>SMS</span>
+          <input type="checkbox" name="checkbox" id="whatsapp">
+          <span>WhatsApp</span>
+          <input type="checkbox" name="checkbox" id="email">
+          <span>E-mail</span>
+          <input type="checkbox" name="checkbox" id="contact">
+          <span>Não desejo receber contato</span>
+        </div>
+      </div>
       <button class="form-button" id="submit-button" type="button" @click="formValidation()">
         Cadastrar usuário
       </button>
@@ -30,7 +72,12 @@ export default {
     return {
       dataUsers: [],
       cpf: "",
-      userName: ""
+      userName: "",
+      phone: "",
+      email: "",
+      confirmEmail: "",
+      birthDate: "",
+
     };
   },
 
@@ -44,9 +91,10 @@ export default {
         this.postUser()
       }
     },
+    
     postUser() {
       axios
-        .post("/api/users", { fullname: this.userName, cpf: this.cpf })
+        .post("/api/users", { fullname: this.userName, cpf: this.cpf, phone: this.phone, email: this.email, birthDate: this.birthDate })
         .then(() => {
           console.log("Usuário cadastrado com sucesso");
         })
@@ -117,5 +165,20 @@ form {
 .form-button:hover {
   transition: 0.2s;
   background-color: #f6678d;
+}
+
+.checkbox-area {
+  display: flex;
+  gap: .25rem;
+}
+
+.box-area {
+  display: flex;
+  gap: .50rem;
+  margin: 0 1rem;
+}
+
+.box-area input {
+  display: flex;
 }
 </style>
