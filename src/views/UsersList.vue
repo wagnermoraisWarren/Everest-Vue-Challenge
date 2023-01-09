@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <table id="table" class="">
+    <table id="table">
       <tr class="head-tr">
         <th>CPF</th>
         <th>Nome Completo</th>
@@ -19,11 +19,11 @@
       
       <td class="eye-btn">
         <button id="eye-btn" @click="isModal = true">
-          <img src="../assets/details-eye.svg" alt="ícone olho" class="display-none" id="closed-eye"/>
+          <img src="../assets/details-eye.svg" alt="Eye Icon"/>
         </button>
       </td>
 
-      <Modal v-show="isModal" @onLeftButtonClick="isModal = false" nome = "Teste" />
+      <Modal v-show="isModal" @onLeftButtonClick="isModal = false" />
     </tr>
   </table>
   <div class="pagination">
@@ -67,21 +67,30 @@ export default {
     }
   },
 
-  emits: ["onLeftButtonClick", "onRightButtonClick"],
+  emits: ["onLeftButtonClick"],
 
   methods: {
     onLeftButtonClick() {
       this.$emit("onLeftButtonClick");
     },
 
+    async getUsers() {
+      try {
+          await axios
+          .get("http://localhost:8080/api/users/")
+          .then((response) => {
+              this.dataUsers = response.data.users;
+              console.log(response);
+          });
+      } catch {
+      console.log("teste");
+      }
+  },
+
     onChangePage(currentItems) {
     this.currentItems = currentItems;
     },
   },
-
-    showModal() {
-      
-    },
 
   components: {
     Modal,
@@ -89,14 +98,8 @@ export default {
   },
 
   mounted() {
-    axios
-      .get("http://localhost:8080/api/users")
-      .then((response) => {
-        this.dataUsers = response.data.users;
-        console.log(response);
-      })
-      .catch((err) => console.log(err));
-  },
+    this.getUsers();
+  }
 };
 </script>
 

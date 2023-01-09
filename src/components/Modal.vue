@@ -10,29 +10,29 @@
             <div class="user-details">
                 <div class="user-box">
                     <h4>CPF</h4>
-                    <p>{{ cpf }}</p>
+                    <p></p>
                 </div>
                  <div class="user-box">
                     <h4>Nome Completo</h4>
-                    <p>{{ nome }}</p>
+                    <p></p>
                 </div>  
                 <div class="user-box">
                     <h4>Nascimento</h4>
-                    <p>19/DEZ/1980</p>
+                    <p></p>
                 </div>
             </div>
             <div class="user-details">
                 <div class="user-box">
                     <h4>Celular</h4>
-                    <p>(XX) XXXXX-XXXX</p>
+                    <p></p>
                 </div>
                  <div class="user-box">
                     <h4>Contato</h4>
-                    <p>WhatsApp</p>
+                    <p></p>
                 </div>  
                 <div class="user-box">
                     <h4>E-mail</h4>
-                    <p>fulano@gmail.com</p>
+                    <p></p>
                 </div>
             </div>           
         </section>
@@ -45,21 +45,39 @@ export default {
 
     data() {
         return {
-
+            currentItems: [],
+            dataUsers: [],
         }
     },
 
-    props: {
-        nome: { type: String, default: '' },
-        cpf:  { type: String, default: '' },
-    },
+    // props: {
+    //     nome: { type: String, default: '' },
+    //     cpf:  { type: String, default: '' },
+    // },
 
     emits: ["onLeftButtonClick"],
 
     methods: {
-    onLeftButtonClick() {
-      this.$emit("onLeftButtonClick");
-    },
+        onLeftButtonClick() {
+            this.$emit("onLeftButtonClick");
+        },
+
+        async getUsers() {
+            try {
+                await axios
+                .get("http://localhost:8080/api/users/")
+                .then((response) => {
+                    this.dataUsers = response.data.users;
+                    console.log(response);
+                });
+            } catch {
+            console.log("teste");
+            }
+        },
+
+        mounted() {
+            this.getUsers();
+        }
   },
 };
 </script>
