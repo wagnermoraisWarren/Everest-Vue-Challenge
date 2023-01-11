@@ -18,12 +18,20 @@
       </td>
       
       <td class="eye-btn">
-        <button id="eye-btn" @click="isModal = true">
+        <button id="eye-btn" v-bind="user" @click="openModal(user), loadingModal()">
           <img src="../assets/details-eye.svg" alt="Eye Icon"/>
         </button>
       </td>
 
-      <Modal v-show="isModal" @onLeftButtonClick="isModal = false" />
+      <Modal 
+        v-show="isModal"
+        @closeModal="isModal = false"
+        :user="modalUser"
+      />
+
+      <Loading 
+        v-show="loadingModal"
+      />
     </tr>
   </table>
   <div class="pagination">
@@ -41,8 +49,9 @@
 
 <script>
 import axios from "axios";
-import Loading from "@/components/Loading.vue";
 import Modal from "@/components/Modal.vue";
+import Loading from "@/components/Loading.vue";
+import { load } from "mime";
 
 const customLabels = {
     first: '<<',
@@ -60,20 +69,18 @@ export default {
     return {
       dataUsers: [],
       currentItems: [],
+      modalUser: {},
       cpf: "",
       exampleItems,
       customLabels,
-      isModal: false
+      isModal: false,
+      loadingModal: false
     }
   },
 
-  emits: ["onLeftButtonClick"],
+  emits: ["closeModal"],
 
   methods: {
-    onLeftButtonClick() {
-      this.$emit("onLeftButtonClick");
-    },
-
     async getUsers() {
       try {
           await axios
@@ -85,10 +92,29 @@ export default {
       } catch {
       console.log("teste");
       }
-  },
+    },
 
     onChangePage(currentItems) {
     this.currentItems = currentItems;
+    },
+
+    openModal(user) {
+      this.modalUser = user
+
+      setTimeout(() => {
+        this.loadingModal = true}, 
+        0, 1000);
+      
+      setTimeout(() => {
+        this.loadingModal = false
+      }, 1100)
+
+      setTimeout(() => {
+        this.isModal = true }, 1200)
+    },
+
+    closeModal() {
+      this.$emit("closeModal");
     },
   },
 
@@ -97,8 +123,15 @@ export default {
     Loading
   },
 
+  // created() {
+  //   setTimeout( () => {
+  //     this.
+  //   }, 1000)
+  // },
+
   mounted() {
     this.getUsers();
+    this.loadingModal();
   }
 };
 </script>
