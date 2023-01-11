@@ -3,36 +3,36 @@
         <header class="title">
             <h2>Detalhes do Usuário</h2>
             <button>
-                <img src="../assets/X-symbol.svg" alt="Close icon" @click="onLeftButtonClick()">
+                <img src="../assets/X-symbol.svg" alt="Close icon" @click="closeModal()">
             </button>
         </header>
         <section class="details">
             <div class="user-details">
                 <div class="user-box">
                     <h4>CPF</h4>
-                    <p></p>
+                    <p> {{ user.cpf }} </p>
                 </div>
                  <div class="user-box">
                     <h4>Nome Completo</h4>
-                    <p></p>
+                    <p> {{ user.fullname }}</p>
                 </div>  
                 <div class="user-box">
                     <h4>Nascimento</h4>
-                    <p></p>
+                    <p> {{ user.birthDate }} </p>
                 </div>
             </div>
             <div class="user-details">
                 <div class="user-box">
                     <h4>Celular</h4>
-                    <p></p>
+                    <p> {{ user.phone}} </p>
                 </div>
                  <div class="user-box">
                     <h4>Contato</h4>
-                    <p></p>
+                    <p> {{user.contact}} </p>
                 </div>  
                 <div class="user-box">
                     <h4>E-mail</h4>
-                    <p></p>
+                    <p> {{user.email}} </p>
                 </div>
             </div>           
         </section>
@@ -45,39 +45,22 @@ export default {
 
     data() {
         return {
-            currentItems: [],
             dataUsers: [],
+            cpf: "",
         }
     },
 
-    // props: {
-    //     nome: { type: String, default: '' },
-    //     cpf:  { type: String, default: '' },
-    // },
-
-    emits: ["onLeftButtonClick"],
+    props: {
+        user: {
+            type: "",
+            require: true
+        }
+    },
 
     methods: {
-        onLeftButtonClick() {
-            this.$emit("onLeftButtonClick");
+        closeModal() {
+            this.$emit("closeModal");
         },
-
-        async getUsers() {
-            try {
-                await axios
-                .get("http://localhost:8080/api/users/")
-                .then((response) => {
-                    this.dataUsers = response.data.users;
-                    console.log(response);
-                });
-            } catch {
-            console.log("teste");
-            }
-        },
-
-        mounted() {
-            this.getUsers();
-        }
   },
 };
 </script>
