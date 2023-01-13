@@ -43,18 +43,27 @@
         <label for="birthDate">Data de Nascimento:</label>
         <input type="date" id="birthDate" v-model="birthDate">
       </div>
-      <div class="checkbox-area">
+      <!-- <div class="checkbox-area">
         <label for="checkbox">Deseja receber contato por:</label>
-        <div class="box-area">
-          <input type="checkbox" name="checkbox" id="sms">
+        <div class="box-area" v-for="contacts in contact" :key="contact">
+          <input type="checkbox" name="checkbox" id="sms" v-model="contact">
           <span>SMS</span>
-          <input type="checkbox" name="checkbox" id="whatsapp">
+          <input type="checkbox" name="checkbox" id="whatsapp" v-model="contact">
           <span>WhatsApp</span>
-          <input type="checkbox" name="checkbox" id="email">
+          <input type="checkbox" name="checkbox" id="email" v-model="contact">
           <span>E-mail</span>
-          <input type="checkbox" name="checkbox" id="contact">
+          <input type="checkbox" name="checkbox" id="contact" v-model="contact">
           <span>Não desejo receber contato</span>
         </div>
+      </div> -->
+      <div class="contact-area">
+        <label for="contact">Deseja receber novidades por:</label>
+        <select name="contactM" id="contact" v-model="contact">
+          <option value="">Selecione a opção...</option>
+          <option value="WhatsApp">WhatsApp</option>
+          <option value="E-mail">E-mail</option>
+          <option value="SMS">SMS</option>
+        </select>
       </div>
       <button class="form-button" id="submit-button" type="button" @click="formValidation()">
         Cadastrar usuário
@@ -77,7 +86,7 @@ export default {
       email: "",
       confirmEmail: "",
       birthDate: "",
-
+      contact: ""
     };
   },
 
@@ -94,7 +103,7 @@ export default {
     
     postUser() {
       axios
-        .post("/api/users", { fullname: this.userName, cpf: this.cpf, phone: this.phone, email: this.email, birthDate: this.birthDate })
+        .post("/api/users", { fullname: this.userName, cpf: this.cpf, phone: this.phone, email: this.email, birthDate: this.birthDate, contact: this.contact })
         .then(() => {
           console.log("Usuário cadastrado com sucesso");
         })
@@ -119,7 +128,7 @@ export default {
 }
 
 form {
-  width: 70%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -140,7 +149,7 @@ form {
   border-radius: 5px;
   border: none;
   outline: none;
-  background-color: #f5f5f5;
+  background-color: #8b848460;
   transition: 200ms
 }
 
@@ -157,7 +166,7 @@ form {
   color: white;
   font-weight: 700;
   align-self: flex-end;
-  margin-top: 1rem;
+  margin: 2rem 0;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -167,18 +176,27 @@ form {
   background-color: #f6678d;
 }
 
-.checkbox-area {
-  display: flex;
-  gap: .25rem;
+.contact-area select {
+  margin: 0 1rem;
+  padding: .25rem .50rem;
+  font-size: .85rem;
+  outline: none;
+  border: 1px solid #663e3e;
+  border-radius: 3px;
+ }
+/*.checkbox-area {
+  display: flex;  
+  align-items: center;
 }
 
 .box-area {
   display: flex;
-  gap: .50rem;
-  margin: 0 1rem;
+  gap: .85rem;
+  width: 100%;
 }
 
-.box-area input {
+.box-area span {
   display: flex;
-}
+  align-items: center;
+}*/
 </style>
