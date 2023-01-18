@@ -1,27 +1,33 @@
 <template>
-  <div class="form-container">
-    <form id="form" action="">
-      <div class="input-area">
-        <label for="name-input">Nome completo:</label>
-        <input type="text" id="name-input" v-model="userName"/>
-      </div>
-      <div class="input-area">
-        <label for="cpf-input">CPF:</label>
-        <input
-          type="text"
-          v-model="cpf"
-          v-mask="'###.###.###-##'"
-          maxlength="14"
-        />
-      </div>
-      <button class="form-button" id="submit-button" type="button" @click="formValidation()">
-        Cadastrar usuário
-      </button>
-    </form>
+  <div>
+    <Header />
+    <Navbar></Navbar>
+    <div class="form-container">
+      <form id="form">
+        <div class="input-area">
+          <label for="name-input">Nome completo:</label>
+          <input type="text" id="name-input" v-model="userName"/>
+        </div>
+        <div class="input-area">
+          <label for="cpf-input">CPF:</label>
+          <input
+            type="text"
+            v-model="cpf"
+            v-mask="'###.###.###-##'"
+            maxlength="14"
+          />
+        </div>
+        <button class="form-button" id="submit-button" type="button" @click="formValidation()">
+          Cadastrar usuário
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
+import Navbar from "@/components/Navbar.vue";
 import axios from "axios";
 
 export default {
@@ -44,6 +50,7 @@ export default {
         this.postUser()
       }
     },
+
     postUser() {
       axios
         .post("/api/users", { fullname: this.userName, cpf: this.cpf })
@@ -58,10 +65,16 @@ export default {
       this.$root.$refs.A.changeScreen();
     },
   },
+
+  components: {
+    Header,
+    Navbar
+  }
 };
 </script>
 
 <style scoped>
+
 .form-container {
   width: 60%;
   margin: 0 auto;
