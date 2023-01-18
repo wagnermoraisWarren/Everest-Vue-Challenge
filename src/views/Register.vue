@@ -1,78 +1,33 @@
 <template>
-  <div class="form-container">
-    <form id="form" action="">
-      <div class="input-area">
-        <label for="name-input">Nome completo:</label>
-        <input type="text" id="name-input" v-model="userName"/>
-      </div>
-      <div class="input-area">
-        <label for="cpf-input">CPF:</label>
-        <input
-          type="text"
-          v-model="cpf"
-          v-mask="'###.###.###-##'"
-          maxlength="14"
-        />
-      </div>
-      <div class="input-area">
-        <label for="phone">Celular:</label>
-        <input 
-          type="text"
-          v-mask="'(##) #.####-####'"
-          v-model="phone"
-          maxlength="16"
-          >
-      </div>
-      <div class="input-area">
-        <label for="email">E-mail:</label>
-        <input 
-          type="email"
-          id="email"
-          v-model="email"
-        >
-      </div>
-      <div class="input-area">
-        <label for="confirmEmail">Confirmar E-mail:</label>
-        <input 
-          type="email"
-          id="confirmEmail"
-          v-model="confirmEmail"
-        >
-      </div>
-      <div class="input-area">
-        <label for="birthDate">Data de Nascimento:</label>
-        <input type="date" id="birthDate" v-model="birthDate">
-      </div>
-      <!-- <div class="checkbox-area">
-        <label for="checkbox">Deseja receber contato por:</label>
-        <div class="box-area" v-for="contacts in contact" :key="contact">
-          <input type="checkbox" name="checkbox" id="sms" v-model="contact">
-          <span>SMS</span>
-          <input type="checkbox" name="checkbox" id="whatsapp" v-model="contact">
-          <span>WhatsApp</span>
-          <input type="checkbox" name="checkbox" id="email" v-model="contact">
-          <span>E-mail</span>
-          <input type="checkbox" name="checkbox" id="contact" v-model="contact">
-          <span>Não desejo receber contato</span>
+  <div>
+    <Header />
+    <Navbar />
+    <div class="form-container">
+      <form id="form">
+        <div class="input-area">
+          <label for="name-input">Nome completo:</label>
+          <input type="text" id="name-input" v-model="userName"/>
         </div>
-      </div> -->
-      <div class="contact-area">
-        <label for="contact">Deseja receber novidades por:</label>
-        <select name="contactM" id="contact" v-model="contact">
-          <option value="">Selecione a opção...</option>
-          <option value="WhatsApp">WhatsApp</option>
-          <option value="E-mail">E-mail</option>
-          <option value="SMS">SMS</option>
-        </select>
-      </div>
-      <button class="form-button" id="submit-button" type="button" @click="formValidation()">
-        Cadastrar usuário
-      </button>
-    </form>
+        <div class="input-area">
+          <label for="cpf-input">CPF:</label>
+          <input
+            type="text"
+            v-model="cpf"
+            v-mask="'###.###.###-##'"
+            maxlength="14"
+          />
+        </div>
+        <button class="form-button" id="submit-button" type="button" @click="formValidation()">
+          Cadastrar usuário
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
+import Navbar from "@/components/Navbar.vue";
 import axios from "axios";
 
 export default {
@@ -81,12 +36,7 @@ export default {
     return {
       dataUsers: [],
       cpf: "",
-      userName: "",
-      phone: "",
-      email: "",
-      confirmEmail: "",
-      birthDate: "",
-      contact: ""
+      userName: ""
     };
   },
 
@@ -100,10 +50,10 @@ export default {
         this.postUser()
       }
     },
-    
+
     postUser() {
       axios
-        .post("/api/users", { fullname: this.userName, cpf: this.cpf, phone: this.phone, email: this.email, birthDate: this.birthDate, contact: this.contact })
+        .post("/api/users", { fullname: this.userName, cpf: this.cpf })
         .then(() => {
           console.log("Usuário cadastrado com sucesso");
         })
@@ -115,10 +65,16 @@ export default {
       this.$root.$refs.A.changeScreen();
     },
   },
+
+  components: {
+    Header,
+    Navbar
+  }
 };
 </script>
 
 <style scoped>
+
 .form-container {
   width: 60%;
   margin: 0 auto;
@@ -128,7 +84,7 @@ export default {
 }
 
 form {
-  width: 90%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -149,7 +105,7 @@ form {
   border-radius: 5px;
   border: none;
   outline: none;
-  background-color: #8b848460;
+  background-color: #f5f5f5;
   transition: 200ms
 }
 
@@ -166,7 +122,7 @@ form {
   color: white;
   font-weight: 700;
   align-self: flex-end;
-  margin: 2rem 0;
+  margin-top: 1rem;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -175,28 +131,4 @@ form {
   transition: 0.2s;
   background-color: #f6678d;
 }
-
-.contact-area select {
-  margin: 0 1rem;
-  padding: .25rem .50rem;
-  font-size: .85rem;
-  outline: none;
-  border: 1px solid #663e3e;
-  border-radius: 3px;
- }
-/*.checkbox-area {
-  display: flex;  
-  align-items: center;
-}
-
-.box-area {
-  display: flex;
-  gap: .85rem;
-  width: 100%;
-}
-
-.box-area span {
-  display: flex;
-  align-items: center;
-}*/
 </style>
