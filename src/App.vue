@@ -1,17 +1,12 @@
 <template>
   <div id="app">
-    <Header/>
-    <Navbar/>
     <div class="view-container">
       <router-view />
     </div>
   </div>
 </template>
 
-<script>
-  import Header from "./components/Header.vue"
-  import Navbar from "./components/Navbar.vue"
-  
+<script>  
   export default {
     name: 'App',
     data() {
@@ -19,10 +14,6 @@
         headerTitle: "Usuários",
       }
     },
-    components: {
-      Header,
-      Navbar
-    }
 }
 </script>
 
