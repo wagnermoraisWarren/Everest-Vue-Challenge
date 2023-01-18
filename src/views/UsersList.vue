@@ -1,49 +1,50 @@
 <template>
-  <div class="container">
-    <table id="table" class="">
-      <tr class="head-tr">
-        <th>CPF</th>
-        <th>Nome Completo</th>
-        <th></th>
-      </tr>
-
-      <tr v-bind:id="user.id" v-for="user in currentItems" :key="user.id">
-
-      <td class="cpf" id="cpf">
-        {{ user.cpf }}
-      </td>
-
-      <td class="name" id="name">
-        {{ user.fullname }}
-      </td>
-      
-      <td class="eye-btn">
-        <button id="eye-btn" @click="hideUser(user.id)">
-          <img
-            class="display-none"
-            id="closed-eye"
-            src="../assets/hideen-eye.svg"
-            alt="ícone olho fechado"
-          />
-          <img src="../assets/details-eye.svg" id="eye" alt="ícone olho" />
-        </button>
-      </td>
-    </tr>
-  </table>
-  <div class="pagination">
-    <jw-pagination
-      :items="dataUsers"
-      :pageSize="5"
-      :disableDefaultStyles="true"
-      :labels="customLabels"
-      @changePage="onChangePage"
-      >
-    </jw-pagination>
+  <div>
+    <Header />
+    <Navbar />
+    <div class="list-box">
+      <router-link to="/register" class="register-button">Cadastrar novo Usuário</router-link>
+      <table id="table" class="">
+        <tr class="head-tr">
+          <th>CPF</th>
+          <th>Nome Completo</th>
+          <th></th>
+        </tr>
+  
+        <tr v-bind:id="user.id" v-for="user in currentItems" :key="user.id">
+  
+          <td class="cpf" id="cpf">
+            {{ user.cpf }}
+          </td>
+    
+          <td class="name" id="name">
+            {{ user.fullname }}
+          </td>
+          
+          <td class="eye-btn">
+            <button id="eye-btn">
+              <img src="../assets/details-eye.svg" id="eye" alt="ícone olho" />
+            </button>
+          </td>
+        </tr>
+      </table>
+      <div class="pagination">
+        <jw-pagination
+          :items="dataUsers"
+          :pageSize="5"
+          :disableDefaultStyles="true"
+          :labels="customLabels"
+          @changePage="onChangePage"
+          >
+        </jw-pagination>
+      </div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
+import Navbar from "@/components/Navbar.vue";
 import axios from "axios";
 
 const customLabels = {
@@ -53,7 +54,7 @@ const customLabels = {
     next: '>'
 };
 
-const exampleItems = [...Array(1000).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
+const listItems = [...Array(1000).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
 
 export default {
   name: "UsersList",
@@ -63,21 +64,12 @@ export default {
       dataUsers: [],
       currentItems: [],
       cpf: "",
-      exampleItems,
+      listItems,
       customLabels
     }
   },
 
   methods: {
-    hideUser(id) {
-      const user = document.getElementById(id);
-      const cpf = user.childNodes[0];
-      const name = user.childNodes[1];
-      cpf.classList.toggle("hide");
-      name.classList.toggle("hide");
-      const button = user.childNodes[2];
-    },
-
     onChangePage(currentItems) {
       this.currentItems = currentItems;
     }
@@ -92,6 +84,11 @@ export default {
       })
       .catch((err) => console.log(err));
   },
+
+  components: {
+    Header,
+    Navbar
+  }
 };
 </script>
 
@@ -110,8 +107,33 @@ th {
   border-bottom: 1px solid #c7c7c7;
 }
 
-.display-none {
-  display: none;
+.list-box {
+  width: 48rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+.register-button {
+  padding: 1rem 2rem;
+  margin: 1rem 2rem;
+  align-self: flex-end;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--brand-magenta);
+  color: white;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.register-button:hover {
+  transition: 0.2s;
+  background: #c14545;
 }
 
 .eye-btn {
