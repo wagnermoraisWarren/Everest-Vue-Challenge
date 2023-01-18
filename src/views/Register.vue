@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <Navbar></Navbar>
+    <Navbar />
     <div class="form-container">
       <form id="form">
         <div class="input-area">
