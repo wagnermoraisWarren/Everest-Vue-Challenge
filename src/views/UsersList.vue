@@ -18,7 +18,7 @@
           </td>
     
           <td class="name" id="name">
-            {{ user.fullname }}
+            {{ user.userName }}
           </td>
           
           <td class="eye-btn">
@@ -67,7 +67,7 @@ const customLabels = {
     next: '>'
 };
 
-const listItems = [...Array(1000).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
+const listItems = [...Array(100).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
 
 export default {
   name: "UsersList",
