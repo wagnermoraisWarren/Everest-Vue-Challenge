@@ -10,16 +10,18 @@
       <form id="form">
         <div class="name-area">
           <label for="name-input">Nome completo:</label>
-          <input type="text" id="name-input" v-model="userName"/>
+          <input type="text" id="name-input" v-model="userData.userName"/>
         </div>
         <div class="email-area">
           <div class="email-box">
             <label for="email">E-mail</label>
-            <input type="text">  
+            <input type="text" v-model="userData.email">  
+            <img src="@/assets/email.svg" alt="Icon">
           </div>
           <div class="confirm-email">
             <label for="email">Confirmar E-mail</label>
-            <input type="text">
+            <input type="text" v-model="userData.confirmEmail">
+            <img src="@/assets/email.svg" alt="Icon">
           </div>
         </div>
         <div class="contact-area">
@@ -27,7 +29,7 @@
             <label for="cpf-input">CPF:</label>
             <input
               type="text"
-              v-model="cpf"
+              v-model="userData.cpf"
               v-mask="'###.###.###-##'"
               maxlength="14"
             >
@@ -36,7 +38,7 @@
             <label for="celphone">Celular</label>
             <input 
               type="text"
-              v-model="celphone"
+              v-model="userData.phone"
               v-mask="'(##) #.####-####'"
             >
           </div>
@@ -46,23 +48,25 @@
           <input
           type="text"
           id="date"
-          v-model="birth"
+          v-model="userData.birthDate"
           v-mask="'##/##/####'"
           >
-          <img src="@/assets/calendar.svg" alt="">
+          <img src="@/assets/calendar.svg" alt="Icon">
         </div>
         <div class="last-contact-area">
           <p>
             Seu cadastro está quase finalizado! Agora, por onde você gostaria que entrassemos em contato para trazer novidades sobre seus investimentos?
           </p>
         </div>
+
         <div class="checkbox-area">
-          <input type="checkbox" name="email" id="email">
-          <label for="email">E-mail e SMS</label>
+          <input type="checkbox" name="checkEmail" v-model="userData.isEmailSms">
+          <label for="checkEmail"> Email e SMS </label>
         </div>
+
         <div class="checkbox-area">
-          <input type="checkbox" name="whats" id="whats">
-          <label for="whats">WhatsApp</label>
+          <input type="checkbox" name="checkWhats" v-model="userData.isWhatsapp">
+          <label for="checkWhats"> WhatsApp </label>
         </div>
 
         <div class="button-box">
@@ -70,7 +74,7 @@
             Cadastrar usuário
           </button>
 
-          <button class="back-button" id="back-button">
+          <button class="back-button" id="back-button" @click="backButton()">
             Voltar
           </button>
         </div>
@@ -89,18 +93,24 @@ export default {
   data() {
     return {
       dataUsers: [],
-      cpf: "",
-      userName: "",
-      celphone: "",
-      birth: "",
-    };
+      userData: {
+        userName: "",
+        email: "",
+        confirmEmail: "",
+        cpf: "",
+        phone: "",
+        birthDate: "",
+        isEmailSms: false,
+        isWhatsapp: false
+      }
+    }
   },
 
   methods: {
     formValidation() {
-      if (!this.userName) {
+      if (!this.userData.userName) {
         alert('Nome informado não é válido. Por gentileza, verifique e tente novamente!')
-      } else if (!this.cpf || this.cpf.length < 14) {
+      } else if (!this.userData.cpf || this.userData.cpf.length < 14) {
         alert('CPF informado não é válido. Por gentileza, verifique e tente novamente.')
       } else {
         this.postUser()
@@ -109,7 +119,7 @@ export default {
 
     postUser() {
       axios
-        .post("/api/users", { fullname: this.userName, cpf: this.cpf })
+        .post("/api/users", this.userData)
         .then(() => {
           console.log("Usuário cadastrado com sucesso");
         })
@@ -118,8 +128,11 @@ export default {
         });
 
       this.$router.push("./");
-      this.$root.$refs.A.changeScreen();
     },
+
+    backButton() {
+      this.$router.push("./");
+    }
   },
 
   components: {
@@ -132,7 +145,7 @@ export default {
 <style scoped>
 .register-box {
   margin: 3.5rem 0 1rem 0;
-  max-width: 780px;
+  max-width: 800px;
 }
 
 .register-box h2 {
@@ -149,7 +162,7 @@ span {
 }
 
 .form-container {
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -197,6 +210,7 @@ form {
   width: 100%;
   padding: 0.5rem;
   margin: 10px;
+  font-size: 1.1rem;
   line-height: 6ex;
   border: 3px solid rgba(0, 0, 0, 0.7);
   border-radius: 5px;
@@ -234,7 +248,8 @@ form {
   position: absolute;
 }
 
-.bday-area img {
+.bday-area img,
+.email-area img {
   position: absolute;
   top: 2rem;
   left: 1.5rem;
