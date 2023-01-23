@@ -1,5 +1,5 @@
 <template>
-    <div class="modal close-modal">
+    <div class="modal">
         <header class="title">
             <h2>Detalhes do Usuário</h2>
             <button>
@@ -14,7 +14,7 @@
                 </div>
                  <div class="user-box">
                     <h4>Nome Completo</h4>
-                    <p> {{ user.fullname }}</p>
+                    <p> {{ user.userName }}</p>
                 </div>  
                 <div class="user-box">
                     <h4>Nascimento</h4>
@@ -28,7 +28,8 @@
                 </div>
                  <div class="user-box">
                     <h4>Contato</h4>
-                    <p> {{user.contact}} </p>
+                    <p v-if="user.isEmailSms">Email e SMS</p>
+                    <p v-if="user.isWhatsapp">WhatsApp</p>
                 </div>  
                 <div class="user-box">
                     <h4>E-mail</h4>
@@ -71,11 +72,11 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        height: 90%;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        margin: 2rem 2rem;
         background: #eff0f3;
         box-shadow: 0px 0px 1px 1100px rgba(0, 0, 0, 0.239);
         border-radius: 5px;
@@ -85,18 +86,24 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2rem 0;
+        margin-bottom: 5rem;
         font-size: 1rem;
         color: rgba(0, 0, 0, 0.8);
     }
 
     .title img {
-        width: 2rem;
+        width: 1.2rem;
+        transition: 200ms;
+    }
+
+    .title img:hover {
+        width: 1.6rem;
+        transition: 200ms;
     }
 
     .title button {
         position: absolute;
-        right: 5rem;
+        right: 3rem;
         background-color: transparent;
         border: none;
         cursor: pointer;
@@ -104,13 +111,11 @@ export default {
 
     .details {
         display: flex;
-        align-items: center;
-        justify-content: center;
         text-align: left;
-        gap: 10rem;
-        margin: 5rem 2rem;
-        padding: 5rem;
-        border: 2px dashed #dfdad8;
+        gap: 2rem;
+        margin: 0 2rem;
+        padding: 2rem;
+        border: 2px dashed #b7a49c;
     }
 
     .user-details h4 {
