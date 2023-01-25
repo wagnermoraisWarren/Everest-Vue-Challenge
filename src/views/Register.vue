@@ -10,17 +10,17 @@
       <form id="form">
         <div class="name-area">
           <label for="name-input">Nome completo:</label>
-          <input type="text" id="name-input" v-model="userData.userName"/>
+          <input type="text" id="name-input" v-model="$v.userData.userName.$model"/>
         </div>
         <div class="email-area">
           <div class="email-box">
             <label for="email">E-mail</label>
-            <input type="text" v-model="userData.email">  
+            <input type="text" v-model="$v.userData.email.$model">  
             <img src="@/assets/email.svg" alt="Icon">
           </div>
           <div class="confirm-email">
             <label for="email">Confirmar E-mail</label>
-            <input type="text" v-model="userData.confirmEmail">
+            <input type="text" v-model="$v.userData.confirmEmail.$model">
             <img src="@/assets/email.svg" alt="Icon">
           </div>
         </div>
@@ -29,7 +29,7 @@
             <label for="cpf-input">CPF:</label>
             <input
               type="text"
-              v-model="userData.cpf"
+              v-model="$v.userData.cpf.$model"
               v-mask="'###.###.###-##'"
               maxlength="14"
             >
@@ -38,7 +38,7 @@
             <label for="celphone">Celular</label>
             <input 
               type="text"
-              v-model="userData.phone"
+              v-model="$v.userData.phone.$model"
               v-mask="'(##) #.####-####'"
             >
           </div>
@@ -86,6 +86,7 @@
 <script>
 import Header from "@/components/Header.vue";
 import Navbar from "@/components/Navbar.vue";
+import { required, minLength, minValue, alpha, email, sameAs } from 'vuelidate/lib/validators';
 import axios from "axios";
 
 export default {
@@ -106,15 +107,132 @@ export default {
     }
   },
 
+  validations: {
+    userData: {
+      userName: { required, alpha, minLengthValue: minLength(7) },
+      email: { required },
+      confirmEmail: { required },
+      cpf: { required, minValueValue: minValue(14) },
+      phone: { required, minValueValue: minValue(16) },
+      birthDate: { required }
+    }
+  },
+
   methods: {
     formValidation() {
-      if (!this.userData.userName) {
-        alert('Nome informado não é válido. Por gentileza, verifique e tente novamente!')
-      } else if (!this.userData.cpf || this.userData.cpf.length < 14) {
-        alert('CPF informado não é válido. Por gentileza, verifique e tente novamente.')
+      if (!this.$v.userData.userName.$model) {
+        this.$toast.error("Nome informado não é válido. Por gentileza, verifique e tente novamente!", {
+          position: "top-center",
+          timeout: 2952,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+          draggable: false,
+          draggablePercent: 0.38,
+          showCloseButtonOnHover: true,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+      });
+
+      } else if ((!this.$v.userData.email.$model)) {
+        this.$toast.error("E-mail inserido inválido! Por gentileza, verifique e tente novamente!", {
+          position: "top-center",
+          timeout: 2952,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+          draggable: false,
+          draggablePercent: 0.38,
+          showCloseButtonOnHover: true,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+      });
+
+      } else if (this.$v.userData.confirmEmail.$model !== this.$v.userData.email.$model ) {
+        this.$toast.error("E-mail inserido não coincide. Por gentileza, verifique e tente novamente!", {
+          position: "top-center",
+          timeout: 2952,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+          draggable: false,
+          draggablePercent: 0.38,
+          showCloseButtonOnHover: true,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+      });
+
+      } else if (!this.$v.userData.cpf.$model) {
+        this.$toast.error("CPF inserido inválido! Por gentileza, verifique e tente novamente!", {
+          position: "top-center",
+          timeout: 2952,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+          draggable: false,
+          draggablePercent: 0.38,
+          showCloseButtonOnHover: true,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+      });
+
+      } else if(!this.$v.userData.phone.$model) {
+        this.$toast.error("Número de celular inserido inválido! Por gentileza, verifique e tente novamente!", {
+          position: "top-center",
+          timeout: 2952,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+          draggable: false,
+          draggablePercent: 0.38,
+          showCloseButtonOnHover: true,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+      });
+
       } else {
         this.postUser()
+        this.$toast.success("Usuário cadastrado com sucesso", {
+          position: "top-center",
+          timeout: 5000,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+          draggable: false,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+
       }
+            // if(!this.$v.userData.birthDate.$model) {
+      //   alert('data errada')
+      // }
+
+      // if (!this.$v.userData.isEmailSms.$model) {
+      //   alert('SMS nao foi checado')
+      // }
+
+      // if (!this.$v.userData.isWhatsapp.$model) {
+      //   alert('WHATS N CHECOU')
+      // }
+
+
+      // else if (!this.userData.cpf || this.userData.cpf.length < 14) {
+      //   alert('CPF informado não é válido. Por gentileza, verifique e tente novamente.')
     },
 
     postUser() {
@@ -145,7 +263,7 @@ export default {
 <style scoped>
 .register-box {
   margin: 3.5rem 0 1rem 0;
-  max-width: 800px;
+  max-width: 830px;
 }
 
 .register-box h2 {
